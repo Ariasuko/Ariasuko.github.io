@@ -104,3 +104,8 @@ deploy:
   type: 'git'
   repo: git@github.com:Ariasuko/Ariasuko.github.io.git
   branch: main
+
+# config of hexo-renderer-pandoc
+pandoc:
+  args:
+    - --mathjax
