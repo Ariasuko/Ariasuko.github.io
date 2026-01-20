@@ -220,7 +220,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-01-20 14:14:00" itemprop="dateModified" datetime="2026-01-20T14:14:00+08:00">2026-01-20</time>
+      <time title="修改时间：2026-01-20 14:19:34" itemprop="dateModified" datetime="2026-01-20T14:19:34+08:00">2026-01-20</time>
     </span>
 
   
@@ -246,7 +246,7 @@
 <p>安装Megatron-LM会面临的核心问题，其实是安装过程中会卡在</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Building wheels for collected packages: causal-conv1d, mamba-ssm, nv-grouped-gemm, transformer_engine_torch</span><br></pre></td></tr></table></figure>
 <p>这一步骤上。而这个问题究其本质，其实就是连不上在海外的github的分发服务器（CDN）。一而言之，不使用<a
-target="_blank" rel="noopener" href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/PyTorch">官方的Docker容器</a>，直接在服务器上配置环境，面临的核心问题实际上<strong>网络</strong>的问题。</p>
+target="_blank" rel="noopener" href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/PyTorch">官方的Docker容器</a>，直接在服务器上配置环境，面临的核心问题实际上是<strong>网络</strong>的问题。</p>
 <p>为了解决这个问题，一般而言就是挂个代理，但是这在服务器上是不现实的。对此有一个替代方案，就是手动去下载wheel预编译文件，然后本地安装，进而把问题转化为找到上述卡住的依赖库提前编译好的wheel文件，它们依赖的目标版本都恰好都满足的版本组合。同时，因为这些预编译文件都放在github上，可以使用一些代理网站在服务器上直接下载，而不是本地上传给服务器，这样可以有效地利用服务器的下载带宽。</p>
 <p>TL;DR的话，在文档撰写的时间点，笔者大致检查过的几个最新的版本的可行组合是：（包括但不限于）</p>
 <ul>
@@ -446,7 +446,7 @@ target="_blank" rel="noopener" href="https://catalog.ngc.nvidia.com/orgs/nvidia/
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-12-15 15:27:12" itemprop="dateModified" datetime="2025-12-15T15:27:12+08:00">2025-12-15</time>
+      <time title="修改时间：2026-01-20 14:19:34" itemprop="dateModified" datetime="2026-01-20T14:19:34+08:00">2026-01-20</time>
     </span>
 
   
