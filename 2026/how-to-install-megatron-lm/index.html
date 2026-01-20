@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+Mono+CJK+SC:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ariasuko.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":true,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本文档着重于Megatron-LM的安装指导与一些排错的技巧，并对该软件给出一个当前安装成功率比较高的组合。 Python不时会出现新的版本管理软件，安装上述软件的方式多数基本也大同小异；当然，随着megatron-core的依赖项的变迁，会调起本地编译的包也在增多，实在没必要把所有情况都面面俱到；但只要把步骤方法要点及原理讲明白，其实这些都是触类旁通的。掌握了文档中这些技巧与方法，以后面对新依赖">
+<meta property="og:type" content="article">
+<meta property="og:title" content="这份文档文档能让你成为Megatron-LM安装与卸载大师">
+<meta property="og:url" content="http://ariasuko.github.io/2026/how-to-install-megatron-lm/index.html">
+<meta property="og:site_name" content="Suko Aria&#39;s blog">
+<meta property="og:description" content="本文档着重于Megatron-LM的安装指导与一些排错的技巧，并对该软件给出一个当前安装成功率比较高的组合。 Python不时会出现新的版本管理软件，安装上述软件的方式多数基本也大同小异；当然，随着megatron-core的依赖项的变迁，会调起本地编译的包也在增多，实在没必要把所有情况都面面俱到；但只要把步骤方法要点及原理讲明白，其实这些都是触类旁通的。掌握了文档中这些技巧与方法，以后面对新依赖">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-01-19T11:50:49.000Z">
+<meta property="article:modified_time" content="2026-01-20T05:38:00.117Z">
+<meta property="article:author" content="Suko Aria">
+<meta property="article:tag" content="经验">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://ariasuko.github.io/2026/how-to-install-megatron-lm/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ariasuko.github.io/2026/how-to-install-megatron-lm/","path":"2026/how-to-install-megatron-lm/","title":"这份文档文档能让你成为Megatron-LM安装与卸载大师"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>这份文档文档能让你成为Megatron-LM安装与卸载大师 | Suko Aria's blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Suko Aria's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">papers overflowing......</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">核心问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E4%BB%A3%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">手动代理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#python"><span class="nav-number">2.1.</span> <span class="nav-text">Python</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#github"><span class="nav-number">2.2.</span> <span class="nav-text">Github</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hugginface"><span class="nav-number">2.3.</span> <span class="nav-text">Hugginface</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8%E5%AE%89%E8%A3%85megatron-lm%E4%B9%8B%E5%89%8D"><span class="nav-number">3.</span> <span class="nav-text">在安装Megatron-LM之前</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E5%B7%A5%E4%BD%9C"><span class="nav-number">3.1.</span> <span class="nav-text">前置工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85pytorch"><span class="nav-number">3.2.</span> <span class="nav-text">安装PyTorch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-ninja-build"><span class="nav-number">3.3.</span> <span class="nav-text">安装 ninja-build</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E5%AE%83"><span class="nav-number">3.4.</span> <span class="nav-text">其它</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-megatron-lm"><span class="nav-number">4.</span> <span class="nav-text">安装 Megatron-LM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-apex"><span class="nav-number">5.</span> <span class="nav-text">安装 Apex</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-flash_attn"><span class="nav-number">6.</span> <span class="nav-text">安装 flash_attn</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%8D%B8%E8%BD%BD"><span class="nav-number">7.</span> <span class="nav-text">如何卸载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-number">8.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Suko Aria"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Suko Aria</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Ariasuko" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Ariasuko" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ariasuko.github.io/2026/how-to-install-megatron-lm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Suko Aria">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Suko Aria's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="这份文档文档能让你成为Megatron-LM安装与卸载大师 | Suko Aria's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          这份文档文档能让你成为Megatron-LM安装与卸载大师
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-01-19 19:50:49" itemprop="dateCreated datePublished" datetime="2026-01-19T19:50:49+08:00">2026-01-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-01-20 13:38:00" itemprop="dateModified" datetime="2026-01-20T13:38:00+08:00">2026-01-20</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>本文档着重于<code>Megatron-LM</code>的安装指导与一些排错的技巧，并对该软件给出一个当前安装成功率比较高的组合。</p>
+<p>Python不时会出现新的版本管理软件，安装上述软件的方式多数基本也大同小异；当然，随着megatron-core的依赖项的变迁，会调起本地编译的包也在增多，实在没必要把所有情况都面面俱到；但只要把步骤方法要点及原理讲明白，其实这些都是触类旁通的。掌握了文档中这些技巧与方法，以后面对新依赖报错也是可以快速上手的，如有疑难欢迎提交相关issues给AI。</p>
+<p>此文档针对的受众是追求快速搞好Megatron-LM环境的相关人群等，不过也因本人知识水平有限，同时也避免重复的“造轮子”，对具体报错的理解和处理等方面需要参考AI回答或阅读网上的一些相关文章，因此允许演绎该作及共享也想不到谁要商用。</p>
+<p>由于需要复现一些论文中的相关代码与结果等等；仅此，配置Megatron-LM只是为研究需要，以下是免责声明：</p>
+<ul>
+<li>本文档不保证内容的<strong>实效性</strong>，有问题欢迎找AI深入探讨</li>
+<li>这个前言其实一点有用的东西都没有</li>
+</ul>
+<p>此文档献给被Megatron-LM环境的配置折磨的死去活来的人们，以上…</p>
+<h1 id="核心问题">核心问题</h1>
+<p>安装Megatron-LM会面临的核心问题，其实是安装过程中会卡在</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Building wheels for collected packages: causal-conv1d, mamba-ssm, nv-grouped-gemm, transformer_engine_torch</span><br></pre></td></tr></table></figure>
+<p>这一步骤上。而这个问题究其本质，其实就是连不上在海外的github的分发服务器（CDN）。一而言之，不使用<a
+target="_blank" rel="noopener" href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/PyTorch">官方的Docker容器</a>，直接在服务器上配置环境，面临的核心问题实际上<strong>网络</strong>的问题。</p>
+<p>为了解决这个问题，一般而言就是挂个代理，但是这在服务器上是不现实的。对此有一个替代方案，就是手动去下载wheel预编译文件，然后本地安装，进而把问题转化为找到上述卡住的依赖库提前编译好的wheel文件，它们依赖的目标版本都恰好都满足的版本组合。同时，因为这些预编译文件都放在github上，可以使用一些代理网站在服务器上直接下载，而不是本地上传给服务器，这样可以有效地利用服务器的下载带宽。</p>
+<p>TL;DR的话，在文档撰写的时间点，笔者大致检查过的几个最新的版本的可行组合是：（包括但不限于）</p>
+<ul>
+<li>python=3.11,3.12</li>
+<li>torch==2.6.0,2.7.0</li>
+</ul>
+<p>本文会介绍<del>实际安装过的</del>python3.11+torch2.6.0的过程和中途可能遇到的问题，接下来是一些常见的手动代理手段介绍。</p>
+<h1 id="手动代理">手动代理</h1>
+<p>为了本文档的完整性，这里附上一份手动代理的方法介绍。所有代理网站和镜像站都以<code>www.abc.xyz</code>代替，具体的代理网站就有请读者自行搜索了，后文给出的下载命令也不会直接添加代理。</p>
+<h2 id="python">Python</h2>
+<p>虽然称不上手动代理，但是确实有一些不太走心的云服务提供商不修改为国内镜像源的情况，这里一并介绍了。</p>
+<p>对于<strong>单次下载</strong>，pip提供了选项<code>-i</code>
+<code>--index-url</code>，用法如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install &lt;package_name&gt; -i https://www.abc.xyz/simple</span><br></pre></td></tr></table></figure>
+<p>如果想一次配置，多次使用，python也提供了相关命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip config set global.index-url https://www.abc.xyz/simple</span><br></pre></td></tr></table></figure>
+<p>该命令的效果等同于修改<code>~/.pip/pip.conf</code>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">global</span>]</span><br><span class="line"><span class="string">index-url</span> <span class="string">=</span> <span class="string">https://www.abc.xyz/simple</span></span><br></pre></td></tr></table></figure>
+<p>另外提一句如果使用了<a
+target="_blank" rel="noopener" href="https://docs.astral.sh/uv/">uv</a>作为版本控制软件，它的pip兼容命令在单次下载时可以继续使用<code>-i</code>选项；但是由于不存在config子命令，并且目前uv会忽略pip.config配置文件，一次配置多次使用的方法略有改变，而且没有配置全局的方法，只能在项目文件中添加如下项目：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[[tool.uv.index]]</span></span><br><span class="line"><span class="attr">url</span> = <span class="string">&quot;htts://www.abc.xyz/simple&quot;</span></span><br><span class="line"><span class="attr">default</span> = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h2 id="github">Github</h2>
+<p>对于Github，本文主要涉及的需求有两个：下载仓库和下载该项目的release。主流的解决方案是用互联网大善人&amp;慈善家Cloudflare家的workers，当然我们直接用别人现成配置好的即可。至于使用方法，只需要在原始链接前面加上你想使用代理网站：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">下载仓库</span></span><br><span class="line">git clone https://www.abc.xyz/https://github.com/xxx/xxx.git</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">下载release</span></span><br><span class="line">wget &quot;https://www.abc.xyz/https://github.com/xxx/xxx/release/x.x.x/xxx.whl&quot;</span><br></pre></td></tr></table></figure>
+<p>当然，还有一种方案就是，去找这个仓库有没有有人搬到Gitee上了，不过一般只能下载这个仓库，release的话Gitee是不会镜像过来的。</p>
+<h2 id="hugginface">Hugginface</h2>
+<p>对于Hugginface则分为两种情况，一是通过Python调用transformer库来下载模型和其它文件（使用他们家的<code>hugginface-cli</code>也属于这种情况），另一种情况是<del>听信AI谗言</del>直接通过wget等工具直接下载相关文件。</p>
+<p>对于前者，官方提供一个非常简单环境变量HF_ENDPOINT来使用镜像站（所以实际链接也不是经典的代理格式），此时具体操作为为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export HF_ENDPOINT=https://www.abc.xyz/</span><br></pre></td></tr></table></figure>
+<p>如果是想通过直链下载文件，则需要把域名替换掉：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://huggingface.co/xxx/xxx -&gt; https://www.abc.xyz/xxx/xxx</span><br></pre></td></tr></table></figure>
+<h1 id="在安装megatron-lm之前">在安装Megatron-LM之前</h1>
+<h2 id="前置工作">前置工作</h2>
+<p>首先确认自己的python版本是否是需要的版本，若不是则要切换版本。以使用conda安装python
+3.12为例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install python=3.12</span><br></pre></td></tr></table></figure>
+<p>然后还有一部分是为了安装megatron-core所需要的依赖：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pybind11 &quot;setuptools&lt;80.0.0,&gt;=77.0.0&quot; &quot;packaging&gt;=24.2&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="安装pytorch">安装PyTorch</h2>
+<p>有一点是在安装megatron-core时，它的安装脚本需要确定环境中PyTorch的版本（即Megatron-LM安装选项<code>--no-build-isolation</code>的作用），因此需要提前安装好PyTorch。首先使用命令<code>nvidia-smi</code>检查服务器的显卡驱动，CUDA支持的版本是否大于等于PyTorch需要的版本，对于举例的2.6.0版本，可以通过一下命令指定版本安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install torch==2.6.0</span><br></pre></td></tr></table></figure>
+<p>上述命令安装的PyTorch的CUDA版本为应该为12.4。如果发现服务器的驱动CUDA小于该版本则比较麻烦，但推荐最好还是更新一下驱动，根据Linux发行版不同方法有所不同，本文档就略过了。</p>
+<details>
+<summary>
+如果读者选择了torch版本不为2.6.0，或者想了解进一步了解CUDA版本的兼容逻辑
+</summary>
+<p>这里涉及四个CUDA版本：</p>
+<ol type="1">
+<li>PyTorch支持的版本</li>
+<li>系统中CUDA工具链的版本</li>
+<li>随着PyTorch下载下来的CUDA pip wheel版本</li>
+<li>GPU驱动支持的版本</li>
+</ol>
+<p><strong>PyTorch支持的版本</strong>，本质上是指的是这个wheel包在预编译时链接的CUDA工具链的版本，可以通过调用<code>torch.version.cuda</code>获取该信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -c &quot;import torch; print(torch.version.cuda)&quot; #torch==2.6.0时默认为12.4</span><br></pre></td></tr></table></figure>
+<p><strong>CUDA工具链</strong>包括编译器<code>nvcc</code>和对应的运行库（<code>.so</code>动态链接库+<code>.h</code>头文件）。PyTorch在安装时同时携带一份和它编译版本一致的动态链接库，这些文件是直接打包进PyTorch的wheel文件之中的。而在PyTorch
+2.0之后，为了支持图编译和自动算子融合，进而引入了OpenAI
+Triton后端，triton则需要CUDA pip wheel。</p>
+<p><strong>CUDA Pip
+Wheel</strong>则是NVIDIA官方提供的一个方案，它解决就是Python程序需要在运行时现写好一份编译好的GPU机器指令时，但是系统不一定有CUDA运行库的需求。它实际上就是通过pip
+wheel包来分发CUDA运行库。通过<code>pip list | grep nvidia</code>可以查看它们的版本号<del>虽然没看出来有什么意义</del>。</p>
+<p><strong>GPU驱动支持的版本</strong>最后决定了具体调用的CUDA运行库是否兼容。总所周知CUDA的地基是C++语言，而众所周知C++动态链接库的兼容性是一个非常严肃的玄学问题，最终取决于CUDA工具链和GPU驱动跨版本的兼容性。对此NVIDIA<a
+target="_blank" rel="noopener" href="https://docs.nvidia.com/deploy/cuda-compatibility/conclusion.html">官方的结论</a>是CUDA驱动程序保持向后兼容性。</p>
+<p>这也就说，<ins><strong>需要满足 PyTorch支持的版本 &lt;=
+(CUDA工具链版本，后文的Apex需要) &lt;= GPU驱动支持的版本
+</strong></ins></p>
+<hr />
+</details>
+<h2 id="安装-ninja-build">安装 ninja-build</h2>
+<p>还有一个比较重要的东西是<a
+target="_blank" rel="noopener" href="https://ninja-build.org/">ninja-build</a>编译后端（作用相当于<code>make</code>）。它的意义在于让涉及C/C++的编译过程尽可能的快，最显著的一点就是它能自动执行多线程编译。安装ninja不仅可以在可以在安装Megatron-LM和Apex极大的加快编译过程，而且在PyTorch的运行过程中也可以加速一些编译过程（类似JIT）。</p>
+<p>包名根据Linux发行版不同也有所不同，但可以用系统的包管理器试一试安装<code>ninja-build</code>或者<code>ninja</code>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">例如对于Debian/Ubuntu发行版</span></span><br><span class="line">apt install ninja-build</span><br></pre></td></tr></table></figure>
+<p>具体的安装说明可以参见<a
+target="_blank" rel="noopener" href="https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages">官方在Github上的安装文档</a>。</p>
+<h2 id="其它">其它</h2>
+<p>其余是一些可以提前安装好的依赖：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install tensorboard #如果需要使用集成的tensorboard功能则需要手动下载</span><br></pre></td></tr></table></figure>
+<p>然后就可以正式进入Megatron-LM的安装了。</p>
+<h1 id="安装-megatron-lm">安装 Megatron-LM</h1>
+<p>需要解释的是Megatron-LM实际上指的是megatron-core的额外依赖选项mlm，同时NVIDIA提供了dev和lts两种依赖策略。其中lts+NGC可以看作是NVIDIA为了追求结果可复现性的努力。总结的话，有5种可行组合：</p>
+<ul>
+<li>（不带额外依赖项）：只有megatron-core和torch</li>
+<li>[dev]：追随最新上游依赖项</li>
+<li>[lts]：NGC（官方Docker容器）PyTorch 24.01的长期支持版本</li>
+<li>[mlm,dev]：（在dev的基础上），能够运行Megatron-LM程序
+<del>笔者也不知道这个指的是什么</del></li>
+<li>[mlm,lts]：同上</li>
+</ul>
+<p>本着利在千秋的思想，一般会选择的是更新、支持的更多的版本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install --no-build-isolation megatron-core[mlm,dev]</span><br></pre></td></tr></table></figure>
+<p>当然此时直接执行安装命令，实际上还是会卡在文章开头的所述的环节上的。对此，我们可以去手动下载恰好满足<code>python=3.11</code>&amp;<code>torch=2.6.0+cu12</code>的wheel预编译包：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">causal-conv1d</span></span><br><span class="line">wget https://github.com/Dao-AILab/causal-conv1d/releases/download/v1.5.3.post1/causal_conv1d-1.5.3.post1+cu12torch2.6cxx11abiFALSE-cp311-cp311-linux_x86_64.whl</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">mamba-ssm</span></span><br><span class="line">wget https://github.com/state-spaces/mamba/releases/download/v2.3.0/mamba_ssm-2.3.0+cu12torch2.6cxx11abiFALSE-cp311-cp311-linux_x86_64.whl</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">nv_grouped_gemm</span></span><br><span class="line">wget https://github.com/fanshiqing/grouped_gemm/releases/download/v1.1.4.post8/nv_grouped_gemm-1.1.4.post8+cu12torch2.6cxx11abiFALSE-cp311-cp311-linux_x86_64.whl</span><br></pre></td></tr></table></figure>
+<p>对于<code>transformer_engine_torch</code>则没有对应的预编译包，但该包的编译一般也不会卡住。在下载好之后就可以直接<code>pip install 本地文件</code>完成安装。之后再执行megatron-core的安装大概率就不会出现问题了。</p>
+<p>以及，如果没有选择举例Python和Torch版本的情况下，预编译包的直链显然也是会不同的。同时为了文档面向未来的兼容性，这里大致讲解一下两个方法。第一种方法就是，直接尝试安装megatron-core，然后等待安装命令超时，之后可以在报错信息中看到具体的下载链接。第二种则是自行前往github发布页，根据本地的实际情况选择依赖包，如果看见包名中的<code>abi</code>默认选<code>FALSE</code>的即可。</p>
+<p>不过如果本地选择的版本确实太新的话，就会导致没有对应的预编译包下载。此时pip安装程序会尝试拉取git仓库进行本地编译，然而这个动作多半也会卡住。解决方法也是自行通过代理<code>git clone</code>然后本地编译了。这种方式过于复杂，也确实没有带来明显的好处，如果读者确实需要则只能请教AI了。</p>
+<h1 id="安装-apex">安装 Apex</h1>
+<p>在安装Apex之前首先需要保证本地有CUDA和NCCL编译工具链。需要额外提醒的是NCCL编译工具链是需要单独安装的，若没有会报错找不到<code>nccl.h</code>。具体安装操作根据选取的Linux发行版有所不同，但网上可以搜索到大量的教程，本文档就也略过了。</p>
+<p>首先需要说明的一点，直接<code>pip install apex</code>下载下来的是<a
+target="_blank" rel="noopener" href="https://pypi.org/project/apex/">另一个包</a>。实际所需的apex包只有拉取git仓库并编译的一个方法，不过安装过程是简单的，前往它的<a
+target="_blank" rel="noopener" href="https://github.com/NVIDIA/apex">Github主页</a>根据指引可以轻松完成安装。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/NVIDIA/apex</span><br><span class="line">cd apex</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">多线程编译，并且安装所有扩展。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">APEX_PARALLEL_BUILD=8</span> </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">NVCC_APPEND_FLAGS=<span class="string">&quot;--threads 4&quot;</span></span> </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">具体扩展的选择方法见Github上的readme.md</span></span><br><span class="line">NVCC_APPEND_FLAGS=&quot;--threads 4&quot; \</span><br><span class="line">    APEX_PARALLEL_BUILD=8 \</span><br><span class="line">    APEX_CPP_EXT=1 APEX_CUDA_EXT=1 APEX_ALL_CONTRIB_EXT=1 \</span><br><span class="line">    pip install -v --no-build-isolation .</span><br></pre></td></tr></table></figure>
+<p>这里可能会出一个问题，那就是在PyTorch的CUDA版本不等于CUDA工具链的版本时，安装apex的脚本应该会发出一个警告并退出。如果CUDA工具链的版本更高+低于驱动支持的CUDA版本的话，临时的解决方案是打开本地Apex的安装脚本<code>setup.py</code>，找到<code>check_cuda_...()</code>函数的调用并注释该行。同样的，不保证实际运行时不会出错。</p>
+<h1 id="安装-flash_attn">安装 flash_attn</h1>
+<p>这是针对训练脚本中，启用了<strong>Flash
+Attention</strong>的情况(<code>--attention-backend</code>)的额外章节，之所以会有该章节是为了提醒<ins><strong>目前</strong></ins>在<code>python=3.11</code>&amp;<code>torch=2.6.0+cu12</code>的情况下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install flash_attn</span><br></pre></td></tr></table></figure>
+<p>自动选取的<code>flash_attn==2.8.3</code>预编译包有bug，具体表现为<a
+target="_blank" rel="noopener" href="https://github.com/Dao-AILab/flash-attention/issues/2010">符号链接出错</a>，可以考虑手动选取<code>2.7.4.post1</code>等较旧的版本。</p>
+<h1 id="如何卸载">如何卸载</h1>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf .venv</span><br></pre></td></tr></table></figure>
+<h1 id="参考文档">参考文档</h1>
+<ul>
+<li>Megatron-LM的<a
+target="_blank" rel="noopener" href="https://github.com/NVIDIA/Megatron-LM">Github主页</a></li>
+<li>Apex的<a target="_blank" rel="noopener" href="https://github.com/NVIDIA/apex">Github主页</a></li>
+<li>NVIDIA官方的Megatron-LM<a
+target="_blank" rel="noopener" href="https://docs.nvidia.com/megatron-core/developer-guide/latest/user-guide/index.html">用户手册</a></li>
+<li>ninja-build的<a target="_blank" rel="noopener" href="https://ninja-build.org/">官网</a></li>
+<li>清华镜像源针对配置pip的<a
+target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/help/pypi/">帮助</a></li>
+<li>uv有关设置index的<a
+target="_blank" rel="noopener" href="https://docs.astral.sh/uv/concepts/indexes/">文档</a></li>
+<li>PyTorch的<a
+target="_blank" rel="noopener" href="https://pytorch.org/get-started/previous-versions/">历史版本安装文档</a>和<a
+target="_blank" rel="noopener" href="https://docs.pytorch.org/docs/stable/index.html">API文档</a></li>
+<li>PyTorch引入<code>torch.complie</code>的<a
+target="_blank" rel="noopener" href="https://pytorch.org/blog/pytorch-2.0-release/">Blog</a></li>
+<li>CUDA Pip Wheels的<a
+target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#pip-wheels">文档</a></li>
+<li>CUDA的<a
+target="_blank" rel="noopener" href="https://docs.nvidia.com/deploy/cuda-compatibility/index.html">兼容性文档</a></li>
+<li>flash_attn在Github上关于<a
+target="_blank" rel="noopener" href="https://github.com/Dao-AILab/flash-attention/issues/2010"><code>symbol not defined linker errors</code>的issue</a></li>
+<li>早知道，还得是<a
+target="_blank" rel="noopener" href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/PyTorch">官方的Docker容器</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BB%8F%E9%AA%8C/" rel="tag"># 经验</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/amp_study/" rel="prev" title="AMP论文阅读">
+                  <i class="fa fa-angle-left"></i> AMP论文阅读
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Suko Aria</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
