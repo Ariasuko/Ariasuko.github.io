@@ -25,7 +25,7 @@ Python不时会出现新的版本管理软件，安装上述软件的方式多�
 Building wheels for collected packages: causal-conv1d, mamba-ssm, nv-grouped-gemm, transformer_engine_torch
 ```
 
-这一步骤上。而这个问题究其本质，其实就是连不上在海外的github的分发服务器（CDN）。一而言之，不使用[官方的Docker容器](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/PyTorch)，直接在服务器上配置环境，面临的核心问题实际上**网络**的问题。
+这一步骤上。而这个问题究其本质，其实就是连不上在海外的github的分发服务器（CDN）。一而言之，不使用[官方的Docker容器](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/PyTorch)，直接在服务器上配置环境，面临的核心问题实际上是**网络**的问题。
 
 为了解决这个问题，一般而言就是挂个代理，但是这在服务器上是不现实的。对此有一个替代方案，就是手动去下载wheel预编译文件，然后本地安装，进而把问题转化为找到上述卡住的依赖库提前编译好的wheel文件，它们依赖的目标版本都恰好都满足的版本组合。同时，因为这些预编译文件都放在github上，可以使用一些代理网站在服务器上直接下载，而不是本地上传给服务器，这样可以有效地利用服务器的下载带宽。
 
